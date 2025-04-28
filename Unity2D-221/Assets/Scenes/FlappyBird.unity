@@ -988,7 +988,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipePrefab: {fileID: 6569422766656890343, guid: c0e927f6b17634d4e83fe12858980a41, type: 3}
-  foodPrefab: {fileID: 8486725032045782715, guid: 4a460a1cc2603ff45ba6c06fe49e677a, type: 3}
+  foodPrefabs:
+  - {fileID: 8486725032045782715, guid: 9c03b80b802302d4ba868b6f9fcdd979, type: 3}
+  - {fileID: 8486725032045782715, guid: 4a460a1cc2603ff45ba6c06fe49e677a, type: 3}
 --- !u!4 &1453283908
 Transform:
   m_ObjectHideFlags: 0
@@ -1345,6 +1347,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d50669be39650046a3b9564dbcc1d4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  easyForceMultiplier: 250
+  hardForceMultiplier: 350
+  isHardMode: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

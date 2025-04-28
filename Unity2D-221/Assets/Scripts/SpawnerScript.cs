@@ -1,12 +1,10 @@
 using UnityEngine;
 
 public class SpawnerScript :MonoBehaviour {
-    [SerializeField]
-    private GameObject pipePrefab;
+    [SerializeField] private GameObject pipePrefab;
     private const float pipeOffSetMax = 2.5f;
 
-    [SerializeField]
-    private GameObject foodPrefab;
+    [SerializeField] private GameObject[] foodPrefabs; // Массив префабов еды
     private const float foodOffSetMax = 4.5f;
 
     private float period = 1.0f;
@@ -32,17 +30,18 @@ public class SpawnerScript :MonoBehaviour {
         }
     }
 
-    private void SpawnObject(GameObject gameObject) {
-
-    }
-
     private void SpawnPipe() {
         GameObject pipe = Instantiate(pipePrefab);
         pipe.transform.position = this.transform.position +
             Random.Range(-pipeOffSetMax, pipeOffSetMax) * Vector3.up;
     }
     private void SpawnFood() {
-        GameObject food = Instantiate(foodPrefab);
+        if (Random.value < 0.4f) {
+            return; // 40% шанс не спавнить еду
+        }
+
+        int index = Random.Range(0, foodPrefabs.Length);
+        GameObject food = Instantiate(foodPrefabs[index]);
         food.transform.position = this.transform.position +
             Random.Range(-foodOffSetMax, foodOffSetMax) * Vector3.up;
         food.transform.Rotate(0, 0, Random.Range(0, 360));

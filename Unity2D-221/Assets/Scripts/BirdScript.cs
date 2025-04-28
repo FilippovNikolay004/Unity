@@ -30,9 +30,12 @@ public class BirdScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Food")) {
+            FoodScript foodScript = other.GetComponent<FoodScript>(); // Получаем компонент FoodScript
+            if (foodScript != null) {
+                health = Mathf.Min(health + foodScript.healthBonus, 100f); // Увеличиваем здоровье на значение из FoodScript
+            }
+
             Destroy(other.gameObject); // Уничтожаем объект, если он с тегом "Food"
-            health = Mathf.Min(health + 10f, 100f); // Увеличиваем здоровье
-            // health = health >= 100f ? 100f : health += 10f; // Ограничиваем здоровье до 100
             Debug.Log("Health: " + health); // Выводим здоровье в консоль
         }
     }
