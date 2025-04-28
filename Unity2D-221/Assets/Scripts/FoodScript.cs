@@ -1,6 +1,6 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class FoodScript : MonoBehaviour
 {
-    public float healthBonus = 10f; // Здоровье, которое восстанавливает еда
+    public float healthBonus = 10f; // Р—РґРѕСЂРѕРІСЊРµ, РєРѕС‚РѕСЂРѕРµ РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РµРґР°
 }

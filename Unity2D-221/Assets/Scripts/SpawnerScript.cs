@@ -1,10 +1,10 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class SpawnerScript :MonoBehaviour {
     [SerializeField] private GameObject pipePrefab;
     private const float pipeOffSetMax = 2.5f;
 
-    [SerializeField] private GameObject[] foodPrefabs; // Массив префабов еды
+    [SerializeField] private GameObject[] foodPrefabs; // РњР°СЃСЃРёРІ РїСЂРµС„Р°Р±РѕРІ РµРґС‹
     private const float foodOffSetMax = 4.5f;
 
     private float period = 1.0f;
@@ -37,7 +37,7 @@ public class SpawnerScript :MonoBehaviour {
     }
     private void SpawnFood() {
         if (Random.value < 0.4f) {
-            return; // 40% шанс не спавнить еду
+            return; // 40% С€Р°РЅСЃ РЅРµ СЃРїР°РІРЅРёС‚СЊ РµРґСѓ
         }
 
         int index = Random.Range(0, foodPrefabs.Length);
