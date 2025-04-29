@@ -11,6 +11,8 @@ public class SpawnerScript :MonoBehaviour {
     private float timeout;
     private float foodTimeout;
 
+    public static int[] foodCount = new int[2]; // Счетчик еды 
+
     void Start() {
         timeout = 0;
         foodTimeout = period * 1.5f;
@@ -41,6 +43,9 @@ public class SpawnerScript :MonoBehaviour {
         }
 
         int index = Random.Range(0, foodPrefabs.Length);
+        foodCount[index]++; // Увеличиваем счетчик еды
+        CounterScript.UpdateCounter();
+
         GameObject food = Instantiate(foodPrefabs[index]);
         food.transform.position = this.transform.position +
             Random.Range(-foodOffSetMax, foodOffSetMax) * Vector3.up;
