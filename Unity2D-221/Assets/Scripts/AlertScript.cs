@@ -1,3 +1,4 @@
+п»їusing System;
 using UnityEngine;
 
 public class AlertScript :MonoBehaviour {
@@ -6,15 +7,16 @@ public class AlertScript :MonoBehaviour {
     private static TMPro.TextMeshProUGUI actionButtonText;
 
     private static GameObject content;
+    private static Action action;
 
-
-    public static void Show(string title, string message, string actionButtonText = "Close") {
+    public static void Show(string title, string message, string actionButtonText = "Close", Action action = null) {
         AlertScript.title.text = title;
         AlertScript.message.text = message;
         AlertScript.actionButtonText.text = actionButtonText;
+        AlertScript.action = action;
 
-        content.SetActive(true); // Показываем контент
-        Time.timeScale = 0.0f; // Останавливаем игру
+        content.SetActive(true); // РџРѕРєР°Р·С‹РІР°РµРј РєРѕРЅС‚РµРЅС‚
+        Time.timeScale = 0.0f; // РћСЃС‚Р°РЅР°РІР»РёРІР°РµРј РёРіСЂСѓ
     }
 
     void Start() {
@@ -24,17 +26,23 @@ public class AlertScript :MonoBehaviour {
         actionButtonText = c.Find("Button/Text").GetComponent<TMPro.TextMeshProUGUI>();
 
         content = c.gameObject;
-        content.SetActive(false); // Скрываем контент при старте
+        content.SetActive(false); // РЎРєСЂС‹РІР°РµРј РєРѕРЅС‚РµРЅС‚ РїСЂРё СЃС‚Р°СЂС‚Рµ
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            OnActionButtonClick(); // Закрываем окно при нажатии Escape
+        if (Input.GetKeyDown(KeyCode.Escape) && content.activeSelf) {
+            OnActionButtonClick(); // Р—Р°РєСЂС‹РІР°РµРј РѕРєРЅРѕ РїСЂРё РЅР°Р¶Р°С‚РёРё Escape
         }
     }
 
     public void OnActionButtonClick() {
-        content.SetActive(false); // Скрываем контент
-        Time.timeScale = 1.0f; // Возобновляем игру
+        content.SetActive(false); // РЎРєСЂС‹РІР°РµРј РєРѕРЅС‚РµРЅС‚
+        Time.timeScale = 1.0f; // Р’РѕР·РѕР±РЅРѕРІР»СЏРµРј РёРіСЂСѓ
+
+        if (action != null) {
+            action.Invoke(); // Р’С‹Р·С‹РІР°РµРј РґРµР№СЃС‚РІРёРµ, РµСЃР»Рё РѕРЅРѕ Р·Р°РґР°РЅРѕ
+        }
+
+        DestroyerScript.ClearField(); // РћС‡РёС‰Р°РµРј РїРѕР»Рµ
     }
 }

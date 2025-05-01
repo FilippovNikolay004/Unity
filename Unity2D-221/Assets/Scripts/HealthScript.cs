@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.UI;
 
 public class HealthScript : MonoBehaviour
@@ -12,15 +12,15 @@ public class HealthScript : MonoBehaviour
 
     void Update()
     {
-        indicator.fillAmount = Mathf.Clamp01(BirdScript.health); // Устанавливаем заполнение индикатора в зависимости от здоровья
+        indicator.fillAmount = Mathf.Clamp01(BirdScript.health); // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј Р·Р°РїРѕР»РЅРµРЅРёРµ РёРЅРґРёРєР°С‚РѕСЂР° РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ Р·РґРѕСЂРѕРІСЊСЏ
         
         Color color;
         if (indicator.fillAmount > 0.5f) {
-            // От зелёного к жёлтому (от 0.5 до 1)
+            // РћС‚ Р·РµР»С‘РЅРѕРіРѕ Рє Р¶С‘Р»С‚РѕРјСѓ (РѕС‚ 0.5 РґРѕ 1)
             float t = (indicator.fillAmount - 0.5f) * 2f;
             color = Color.Lerp(Color.yellow, Color.green, t);
         } else {
-            // От красного к жёлтому (от 0 до 0.5)
+            // РћС‚ РєСЂР°СЃРЅРѕРіРѕ Рє Р¶С‘Р»С‚РѕРјСѓ (РѕС‚ 0 РґРѕ 0.5)
             float t = indicator.fillAmount * 2f;
             color = Color.Lerp(Color.red, Color.yellow, t);
         }

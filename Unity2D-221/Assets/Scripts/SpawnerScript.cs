@@ -1,15 +1,24 @@
 ﻿using UnityEngine;
 
 public class SpawnerScript :MonoBehaviour {
+    public static float _difficulty = 0.5f; // Сложность игры (по умолчанию 0.5)
+    public static float difficulty {
+        get => _difficulty;
+        set { 
+            _difficulty = value; 
+            foodTimeout = timeout + period * 1.5f; // Обновляем таймаут еды при изменении сложности
+        }
+    }
+
     [SerializeField] private GameObject pipePrefab;
     private const float pipeOffSetMax = 2.5f;
 
     [SerializeField] private GameObject[] foodPrefabs; // Массив префабов еды
     private const float foodOffSetMax = 4.5f;
 
-    private float period = 1.0f;
-    private float timeout;
-    private float foodTimeout;
+    private static float period => 2.0f - 0.9f * difficulty;
+    private static float timeout;
+    private static float foodTimeout;
 
     public static int[] foodCount = new int[2]; // Счетчик еды 
 

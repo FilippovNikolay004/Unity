@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\AlertScript.cs" />
     <Compile Include="Assets\Scripts\CounterScript.cs" />
     <Compile Include="Assets\Scripts\ClockScript.cs" />
+    <Compile Include="Assets\Scripts\PauseScript.cs" />
     <Compile Include="Assets\Scripts\HealthScript.cs" />
     <Compile Include="Assets\Scripts\DestroyerScript.cs" />
     <Compile Include="Assets\Scripts\BirdScript.cs" />
