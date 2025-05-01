@@ -12,7 +12,7 @@ public class CameraScript : MonoBehaviour
     private float angelX;
 
     private float sensitivityY = 10.0f;
-    private float sensitivityX = 5.0f;
+    private float sensitivityX = 7.0f;
 
 
     void Start()
@@ -32,9 +32,12 @@ public class CameraScript : MonoBehaviour
         angelY += lookValue.x * sensitivityX;
         angelX -= lookValue.y * sensitivityY;
 
-        this.transform.eulerAngles = new Vector3(angelX, angelY, 0f);
+        // Ограничение угла наклона вверх/вниз
+        angelX = Mathf.Clamp(angelX, 5f, 45f);
 
         //this.transform.position = cameraAnchor.position + offset;
-        this.transform.position = cameraAnchor.position + Quaternion.Euler(angelX, angelY, 0f) * offset;
+        this.transform.position = cameraAnchor.position + Quaternion.Euler(0f, angelY, 0f) * offset;
+        this.transform.eulerAngles = new Vector3(angelX, angelY, 0f);
+
     }
 }
