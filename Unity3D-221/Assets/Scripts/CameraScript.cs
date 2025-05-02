@@ -8,36 +8,78 @@ public class CameraScript : MonoBehaviour
 
     private InputAction lookAction;
 
-    private float angelY;
-    private float angelX;
+    private float angleX0;
+    private float angleY0;
+
+    private float angleY;
+    private float angleX;
 
     private float sensitivityY = 10.0f;
     private float sensitivityX = 7.0f;
 
+    private float minOffset = 1.0f;
+    private float maxOffset = 2.5f;
+
+    private float maxAngleY = 45f;
+    private float minAngleY = 5f;
+    private float maxAngleYFpv = 35.0f;
+    private float minAngleYFpv = -60.0f;
+
+    private bool isFpv;
+
+    public static bool isFixed = false;
+    public static Transform fixedCameraPosition = null!;
 
     void Start()
     {
         offset = this.transform.position - cameraAnchor.position;
         lookAction = InputSystem.actions.FindAction("Look");
         
-        angelY = this.transform.eulerAngles.y;
-        angelX = this.transform.eulerAngles.x;
-        
+        angleY = angleY0 = this.transform.eulerAngles.y;
+        angleX = angleX0 = this.transform.eulerAngles.x;
+
+        isFpv = offset.magnitude < minOffset;
     }
 
     void Update()
     {
-        Vector2 lookValue = Time.deltaTime * lookAction.ReadValue<Vector2>(); // From Unity 6
-                                                                              //new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        angelY += lookValue.x * sensitivityX;
-        angelX -= lookValue.y * sensitivityY;
+        if (isFixed) {
+            this.transform.position = fixedCameraPosition.position;
+            this.transform.rotation = fixedCameraPosition.rotation;
+        } else {
+            Vector2 zoom = Input.mouseScrollDelta;
+            if (zoom.y > 0 && !isFpv) {
+                offset *= 0.9f;
+                if (offset.magnitude < minOffset) {
+                    offset *= 0.01f;
+                    isFpv = true;
+                }
+            } else if (zoom.y < 0) {
+                if (isFpv) {
+                    offset *= minOffset / offset.magnitude;
+                    isFpv = false;
+                }
+                if (offset.magnitude < maxOffset) {
+                    offset *= 1.1f;
+                }
+            }
 
-        // Ограничение угла наклона вверх/вниз
-        angelX = Mathf.Clamp(angelX, 5f, 45f);
+            Vector2 lookValue = Time.deltaTime * lookAction.ReadValue<Vector2>(); // From Unity 6
+                                                                                  //new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+            angleY += lookValue.x * sensitivityX;
+            angleX -= lookValue.y * sensitivityY;
 
-        //this.transform.position = cameraAnchor.position + offset;
-        this.transform.position = cameraAnchor.position + Quaternion.Euler(0f, angelY, 0f) * offset;
-        this.transform.eulerAngles = new Vector3(angelX, angelY, 0f);
+            if (!isFpv)
+                // Ограничение угла наклона вверх/вниз
+                angleX = Mathf.Clamp(angleX, minAngleY, maxAngleY);
+            else
+                // Ограничение угла наклона при виде от первого лица вверх/вниз
+                angleX = Mathf.Clamp(angleX, minAngleYFpv, maxAngleYFpv);
 
+            //this.transform.position = cameraAnchor.position + offset;
+            //this.transform.position = cameraAnchor.position + Quaternion.Euler(0f, angelY - angelY0, 0f) * offset;
+            this.transform.position = cameraAnchor.position + Quaternion.Euler(angleX - angleX0, angleY - angleY0, 0f) * offset;
+            this.transform.eulerAngles = new Vector3(angleX, angleY, 0f);
+        }
     }
 }
