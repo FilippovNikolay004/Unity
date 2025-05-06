@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\CameraFixedScript.cs" />
+    <Compile Include="Assets\Scripts\FlashLightScript.cs" />
+    <Compile Include="Assets\Scripts\LightScript.cs" />
     <Compile Include="Assets\Scripts\CameraScript.cs" />
   </ItemGroup>
   <ItemGroup>
