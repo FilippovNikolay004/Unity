@@ -25,7 +25,7 @@ public class CameraScript : MonoBehaviour
     private float maxAngleYFpv = 35.0f;
     private float minAngleYFpv = -60.0f;
 
-    private bool isFpv;
+    public static bool isFpv;
 
     public static bool isFixed = false;
     public static Transform fixedCameraPosition = null!;

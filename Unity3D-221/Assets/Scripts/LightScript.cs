@@ -6,7 +6,7 @@ public class LightScript : MonoBehaviour
     private Light[] dayLights;
     private Light[] nightLights;
 
-    private bool isDay;
+    public static bool isDay;
 
     void Start()
     {
