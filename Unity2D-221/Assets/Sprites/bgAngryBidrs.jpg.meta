@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      bgAngryBidrs_0: 1505385624634640213
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

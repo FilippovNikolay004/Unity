@@ -25,8 +25,6 @@ public class CameraScript : MonoBehaviour
     private float maxAngleYFpv = 35.0f;
     private float minAngleYFpv = -60.0f;
 
-    public static bool isFpv;
-
     public static bool isFixed = false;
     public static Transform fixedCameraPosition = null!;
 
@@ -38,7 +36,7 @@ public class CameraScript : MonoBehaviour
         angleY = angleY0 = this.transform.eulerAngles.y;
         angleX = angleX0 = this.transform.eulerAngles.x;
 
-        isFpv = offset.magnitude < minOffset;
+        GameState.isFpv = offset.magnitude < minOffset;
     }
 
     void Update()
@@ -48,16 +46,16 @@ public class CameraScript : MonoBehaviour
             this.transform.rotation = fixedCameraPosition.rotation;
         } else {
             Vector2 zoom = Input.mouseScrollDelta;
-            if (zoom.y > 0 && !isFpv) {
+            if (zoom.y > 0 && !GameState.isFpv) {
                 offset *= 0.9f;
                 if (offset.magnitude < minOffset) {
                     offset *= 0.01f;
-                    isFpv = true;
+                    GameState.isFpv = true;
                 }
             } else if (zoom.y < 0) {
-                if (isFpv) {
+                if (GameState.isFpv) {
                     offset *= minOffset / offset.magnitude;
-                    isFpv = false;
+                    GameState.isFpv = false;
                 }
                 if (offset.magnitude < maxOffset) {
                     offset *= 1.1f;
@@ -69,7 +67,7 @@ public class CameraScript : MonoBehaviour
             angleY += lookValue.x * sensitivityX;
             angleX -= lookValue.y * sensitivityY;
 
-            if (!isFpv)
+            if (!GameState.isFpv)
                 // Ограничение угла наклона вверх/вниз
                 angleX = Mathf.Clamp(angleX, minAngleY, maxAngleY);
             else

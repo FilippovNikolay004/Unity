@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Day
   - Night
+  - Battery
   layers:
   - Default
   - TransparentFX

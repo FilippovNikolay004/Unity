@@ -10,11 +10,28 @@ public class SpawnerScript :MonoBehaviour {
         }
     }
 
+    public static float _lifeDropChance = 0.2f; // Шанс появления жизни
+    public static float lifeDropChance {
+        get => _lifeDropChance;
+        set => _lifeDropChance = Mathf.Clamp01(value); // Ограничим от 0 до 1
+    }
+
     [SerializeField] private GameObject pipePrefab;
     private const float pipeOffSetMax = 2.5f;
 
     [SerializeField] private GameObject[] foodPrefabs; // Массив префабов еды
     private const float foodOffSetMax = 4.5f;
+
+
+    public static float _foodDropChance = 0.4f; // Шанс выпадения еды
+    public static float foodDropChance {
+        get => _foodDropChance;
+        set {
+            _foodDropChance = value;
+            foodTimeout = timeout + period * 1.5f;
+        }
+    }
+
 
     private static float period => 2.0f - 0.9f * difficulty;
     private static float timeout;
@@ -47,8 +64,8 @@ public class SpawnerScript :MonoBehaviour {
             Random.Range(-pipeOffSetMax, pipeOffSetMax) * Vector3.up;
     }
     private void SpawnFood() {
-        if (Random.value < 0.4f) {
-            return; // 40% шанс не спавнить еду
+        if (Random.value < foodDropChance) {
+            return; // Шанс не спавнить еду
         }
 
         int index = Random.Range(0, foodPrefabs.Length);

@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cherry-logo-icon_0: 3296263236770113542
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

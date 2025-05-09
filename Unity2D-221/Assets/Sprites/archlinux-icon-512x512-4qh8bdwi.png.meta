@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      archlinux-icon-512x512-4qh8bdwi_0: -8455406932696377228
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

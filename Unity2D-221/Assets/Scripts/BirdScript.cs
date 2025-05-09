@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class BirdScript : MonoBehaviour
 {
+    public static float extraLifeChance = 0.2f;
+
     [SerializeField] private float easyForceMultiplier = 250f;   // сила для простого режима
     [SerializeField] private float hardForceMultiplier = 350f;   // сила для сложного режима
     [SerializeField] private bool isHardMode = false;            // флаг режима игры
@@ -55,6 +57,14 @@ public class BirdScript : MonoBehaviour
     }
 
     private void Loose() {
+        // Шанс дополнительной жизни
+        if (Random.value < extraLifeChance) {
+            health = 1.0f;
+            AlertScript.Show("Second Chance", "You got an extra life!", "Continue", () => DestroyerScript.ClearField());
+            Time.timeScale = 0;
+            return;
+        }
+
         tries--; // Уменьшаем количество попыток
         triesTmp.text = tries.ToString(); // Устанавливаем текстовое значение количества попыток
 

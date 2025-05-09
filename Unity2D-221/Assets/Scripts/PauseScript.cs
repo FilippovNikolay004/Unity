@@ -37,7 +37,17 @@ public class PauseScript : MonoBehaviour
         Time.timeScale = 1.0f; // Возобновляем игру
     }
 
+
     public void OnIntervalValueChanged(Single value) {
         SpawnerScript.difficulty = value; // Устанавливаем сложность игры
+        Debug.Log($"Chance hard value: {value}");
+    }
+    public void OnIntervalValueChancesLife(Single value) {
+        SpawnerScript.foodDropChance = value;
+        Debug.Log($"Chance life value: {value}"); // Устанавливаем шанс доп. жизни
+    }
+    public void OnIntervalValueChanceFood(Single value) {
+        BirdScript.extraLifeChance = value;
+        Debug.Log($"Chance food value: {value}"); // Устанавливаем шанс спавна еды
     }
 }
