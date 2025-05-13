@@ -1,11 +1,11 @@
-﻿using System.Security.Cryptography;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Gates1Script : MonoBehaviour
+public class GatesScript : MonoBehaviour
 {
     [SerializeField] private int KeyNumber = 1;
     [SerializeField] private Vector3 openDirection = Vector3.forward;
     [SerializeField] private float size = 0.7f;
+    [SerializeField] private string desk = "black";
 
     private float openTime;
     private float openTime1 = 4.0f;
@@ -17,24 +17,16 @@ public class Gates1Script : MonoBehaviour
     private bool isKeyInserted;
     private bool isKeyCollected;
 
-    void Start()
-    {
-        isKeyInserted = false;
-        hitCount = 0;
-        GameState.AddListener(OnGameStateChanged);
+
+    void Start() {
+        GameEventSystem.Subscribe(OnGameEvent);
     }
 
-
-    void Update()
-    {
-
-        //Debug.Log($"{-(transform.localPosition.magnitude)} > -{size}");
+    void Update() {
         if (isKeyInserted && -(transform.localPosition.magnitude) > -size) {
             transform.Translate(-(size * Time.deltaTime / openTime * openDirection));
         }
     }
-
-
     private void OnCollisionEnter(Collision collision) {
         Debug.Log(collision.gameObject.name);
         if (collision.gameObject.name == "Player") {
@@ -53,15 +45,13 @@ public class Gates1Script : MonoBehaviour
         }
     }
 
-    private void OnGameStateChanged(string fieldName) {
-        Debug.Log(fieldName);
-        if (fieldName == $"isKey{KeyNumber}Collected") {
+    private void OnGameEvent(GameEvent gameEvent) {
+        if (gameEvent.type == $"Key{KeyNumber}Collected") {
             isKeyCollected = true;
-        } else if (fieldName == $"isKey{KeyNumber}InTime") {
-            isKeyInTime = false;
+            isKeyInTime = (bool)gameEvent.payload;
         }
     }
     private void OnDestroy() {
-        GameState.RemoveListener(OnGameStateChanged);
+        GameEventSystem.Unsubscribe(OnGameEvent);
     }
 }

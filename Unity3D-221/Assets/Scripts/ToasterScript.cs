@@ -29,9 +29,10 @@ public class ToasterScript : MonoBehaviour
         timeout = 0.0f;
 
         GameState.AddListener(OnGameStateChanged);
+        GameEventSystem.Subscribe(OnGameEvent);
     }
 
-    
+
     void Update()
     {
         if (timeout > 0) {
@@ -50,12 +51,20 @@ public class ToasterScript : MonoBehaviour
     }
 
     private void OnGameStateChanged(string fieldName) {
-        if (fieldName == nameof(GameState.isKey1Collected)) {
-            Toast("One key has been found. You can open the grey doors.");
+        //if (fieldName == nameof(GameState.isKey1Collected)) {
+        //    Toast("One key has been found. You can open the grey doors.");
+        //} else if (fieldName == nameof(GameState.isKey2Collected)) {
+        //    Toast("Two key has been found. You can open the blue doors.");
+        //}
+    }
+    private void OnGameEvent(GameEvent gameEvent) {
+        if (gameEvent.toast is string msg) {
+            Toast(msg);
         }
     }
     private void OnDestroy() {
         GameState.RemoveListener(OnGameStateChanged);
+        GameEventSystem.Unsubscribe(OnGameEvent);
     }
 
 public static void Toast(string message, float time = 0.0f) {
@@ -72,8 +81,5 @@ public static void Toast(string message, float time = 0.0f) {
     private class ToastMessage {
         public string message { get; set; }
         public float time { get; set; }
-
-
-
     }
 }

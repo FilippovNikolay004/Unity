@@ -5,8 +5,16 @@ using UnityEngine;
 
 public class GameState
 {
-    public static bool isKey1InTime { get; set; }
-
+    public static bool _isKey1InTime = false;
+    public static bool isKey1InTime {
+        get => _isKey1InTime;
+        set {
+            if (_isKey1InTime != value) {
+                _isKey1InTime = value;
+                Notify(nameof(isKey1InTime));
+            }
+        }
+    }
 
     public static bool _isKey1Collected = false;
     public static bool isKey1Collected {
@@ -19,7 +27,20 @@ public class GameState
         }
     }
 
-    public static bool _isKey2Collected = true;
+
+
+    public static bool _isKey2InTime = false;
+    public static bool isKey2InTime {
+        get => _isKey2InTime;
+        set {
+            if (_isKey2InTime != value) {
+                _isKey2InTime = value;
+                Notify(nameof(isKey2InTime));
+            }
+        }
+    }
+
+    public static bool _isKey2Collected = false;
     public static bool isKey2Collected {
         get => _isKey2Collected;
         set {
@@ -29,6 +50,7 @@ public class GameState
             }
         }
     }
+
 
 
     public static bool _isDay = true;
@@ -68,4 +90,16 @@ public class GameState
         }
     }
     #endregion
+
+    public static void SetProperty(string name, object value) {
+        var prop = typeof(GameState).GetProperty(
+                name,
+                System.Reflection.BindingFlags.Static |
+                System.Reflection.BindingFlags.Public
+            );
+        if (prop == null) {
+            Debug.LogError($"Error prop setting. Name not found: '{name}' (value '{value}')");
+        }
+        else prop.SetValue(null, value);
+    }
 }

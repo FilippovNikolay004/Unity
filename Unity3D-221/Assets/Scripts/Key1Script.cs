@@ -3,9 +3,10 @@ using UnityEngine.UI;
 
 public class Key1Script : MonoBehaviour
 {
+    [SerializeField] private int keyNumber = 1;
+    [SerializeField] private float timeout = 10.0f;
     private GameObject content;
     private Image incicatorImage;
-    private float timeout = 10.0f;
     private float leftTime;
 
     void Start()
@@ -34,14 +35,16 @@ public class Key1Script : MonoBehaviour
             );
             leftTime -= Time.deltaTime;
             if (leftTime < 0) {
-                GameState.isKey1InTime = false;
+                //GameState.isKey1InTime = false;
+                GameState.SetProperty($"isKey{keyNumber}InTime", false);
             }
         }
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.name == "Player") {
-            GameState.isKey1Collected = true;
+            //GameState.isKey1Collected = true;
+            GameState.SetProperty($"isKey{keyNumber}Collected", true);
             Destroy(this.gameObject);
         }
     }
