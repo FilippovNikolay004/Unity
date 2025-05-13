@@ -49,7 +49,14 @@ public class FlashLightScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Battery")) {
-            charge += 1.0f;
+            
+
+            BatteryScript battery = other.gameObject.GetComponent<BatteryScript>();
+            if (battery != null) {
+                charge += battery.GetCharge();
+            }
+
+            
 
             GameObject.Destroy(other.gameObject);
             GameEventSystem.EmitEvent(new GameEvent { 
