@@ -5,6 +5,7 @@ public class KeyScript : MonoBehaviour
 {
     [SerializeField] private int keyNumber = 1;
     [SerializeField] private float timeout = 10.0f;
+    [SerializeField] private string desk = "color";
 
     private GameObject content;
     private Image indicatorImage;
@@ -19,7 +20,7 @@ public class KeyScript : MonoBehaviour
 
         indicatorImage.fillAmount = 1.0f;
         leftTime = timeout;
-        GameState.isKey1InTime = true;
+        //GameState.isKey1InTime = true;
     }
 
 
@@ -35,8 +36,6 @@ public class KeyScript : MonoBehaviour
             );
             leftTime -= Time.deltaTime;
             if (leftTime < 0) {
-                //GameState.isKey1InTime = false;
-                //GameState.SetProperty($"isKey{keyNumber}InTime", false);
                 isInTime = false;
             }
         }
@@ -44,12 +43,13 @@ public class KeyScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.name == "Player") {
-            //GameState.isKey1Collected = true;
-            //GameState.SetProperty($"isKey{keyNumber}Collected", true);
             GameEventSystem.EmitEvent(new GameEvent {
                 type = $"Key{keyNumber}Collected",
                 payload = isInTime,
-                toast = $"key #{keyNumber} has been found. You can open the black door."
+                toast = $"key #{keyNumber} has been found. You can open the {desk} door.",
+                sound = isInTime
+                ? EffectSounds.keyCollectedInTime
+                : EffectSounds.keyCollectedOutOfTime
             });
             Destroy(this.gameObject);
         }

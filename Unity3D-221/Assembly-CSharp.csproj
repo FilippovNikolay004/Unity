@@ -66,11 +66,11 @@
     <Compile Include="Assets\Scripts\CameraFixedScript.cs" />
     <Compile Include="Assets\Scripts\SkyboxScript.cs" />
     <Compile Include="Assets\Scripts\KeyScript.cs" />
-    <Compile Include="Assets\Scripts\Key1Script.cs" />
-    <Compile Include="Assets\Scripts\Gates1Script.cs" />
+    <Compile Include="Assets\Scripts\EffectSounds.cs" />
     <Compile Include="Assets\Scripts\FlashLightScript.cs" />
     <Compile Include="Assets\Scripts\LightScript.cs" />
     <Compile Include="Assets\Scripts\GatesScript.cs" />
+    <Compile Include="Assets\Scripts\EffectsScript.cs" />
     <Compile Include="Assets\Scripts\GameEventSystem.cs" />
     <Compile Include="Assets\Scripts\GameEvent.cs" />
     <Compile Include="Assets\Scripts\CameraScript.cs" />

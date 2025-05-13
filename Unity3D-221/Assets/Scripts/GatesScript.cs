@@ -5,7 +5,6 @@ public class GatesScript : MonoBehaviour
     [SerializeField] private int KeyNumber = 1;
     [SerializeField] private Vector3 openDirection = Vector3.forward;
     [SerializeField] private float size = 0.7f;
-    [SerializeField] private string desk = "black";
 
     private float openTime;
     private float openTime1 = 4.0f;
@@ -14,25 +13,47 @@ public class GatesScript : MonoBehaviour
     private int hitCount;
 
     private bool isKeyInTime = true;
+    private bool isOpened = false;
     private bool isKeyInserted;
     private bool isKeyCollected;
 
+    private AudioSource openingSound1;
+    private AudioSource openingSound2;
+
 
     void Start() {
+        isKeyInserted = false;
+        hitCount = 0;
+
+        AudioSource[] openingSounds = GetComponents<AudioSource>();
+        openingSound1 = openingSounds[0];
+        openingSound2 = openingSounds[1];
+
         GameEventSystem.Subscribe(OnGameEvent);
     }
 
     void Update() {
-        if (isKeyInserted && -(transform.localPosition.magnitude) > -size) {
+        if (!isOpened && isKeyInserted && -(transform.localPosition.magnitude) > -size) {
             transform.Translate(-(size * Time.deltaTime / openTime * openDirection));
+
+            if (-(transform.localPosition.magnitude) <= -size) {
+                // Opening ends
+                isOpened = true;
+                openingSound1.Stop();
+                openingSound2.Stop();
+            }
         }
     }
     private void OnCollisionEnter(Collision collision) {
         Debug.Log(collision.gameObject.name);
         if (collision.gameObject.name == "Player") {
             if (isKeyCollected) {
-                isKeyInserted = true;
-                openTime = isKeyInTime ? openTime1 : openTime2;
+                if (!isKeyInserted) { 
+                    // Opening begins
+                    isKeyInserted = true;
+                    openTime = isKeyInTime ? openTime1 : openTime2;
+                    (isKeyInTime ? openingSound1 : openingSound2).Play();
+                }
             } else {
                 if (hitCount == 0) {
                     ToasterScript.Toast($"To open the door, find key #{KeyNumber}");

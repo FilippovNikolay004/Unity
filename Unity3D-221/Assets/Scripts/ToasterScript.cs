@@ -51,11 +51,12 @@ public class ToasterScript : MonoBehaviour
     }
 
     private void OnGameStateChanged(string fieldName) {
-        //if (fieldName == nameof(GameState.isKey1Collected)) {
-        //    Toast("One key has been found. You can open the grey doors.");
-        //} else if (fieldName == nameof(GameState.isKey2Collected)) {
-        //    Toast("Two key has been found. You can open the blue doors.");
-        //}
+        if (fieldName == nameof(GameState.isDay)) {
+            Toast(GameState.isDay 
+                ? "Day has fallen" 
+                : "Night has fallen"
+            );
+        }
     }
     private void OnGameEvent(GameEvent gameEvent) {
         if (gameEvent.toast is string msg) {

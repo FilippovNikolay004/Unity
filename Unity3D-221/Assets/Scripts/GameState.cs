@@ -5,54 +5,6 @@ using UnityEngine;
 
 public class GameState
 {
-    public static bool _isKey1InTime = false;
-    public static bool isKey1InTime {
-        get => _isKey1InTime;
-        set {
-            if (_isKey1InTime != value) {
-                _isKey1InTime = value;
-                Notify(nameof(isKey1InTime));
-            }
-        }
-    }
-
-    public static bool _isKey1Collected = false;
-    public static bool isKey1Collected {
-        get => _isKey1Collected;
-        set {
-            if (_isKey1Collected != value) {
-                _isKey1Collected = value;
-                Notify(nameof(isKey1Collected));
-            }
-        }
-    }
-
-
-
-    public static bool _isKey2InTime = false;
-    public static bool isKey2InTime {
-        get => _isKey2InTime;
-        set {
-            if (_isKey2InTime != value) {
-                _isKey2InTime = value;
-                Notify(nameof(isKey2InTime));
-            }
-        }
-    }
-
-    public static bool _isKey2Collected = false;
-    public static bool isKey2Collected {
-        get => _isKey2Collected;
-        set {
-            if (_isKey2Collected != value) {
-                _isKey2Collected = value;
-                Notify(nameof(isKey2Collected));
-            }
-        }
-    }
-
-
-
     public static bool _isDay = true;
     public static bool isDay {
         get => _isDay;
