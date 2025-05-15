@@ -45,7 +45,7 @@ public class CameraScript : MonoBehaviour
             this.transform.position = fixedCameraPosition.position;
             this.transform.rotation = fixedCameraPosition.rotation;
         } else {
-            Vector2 zoom = Input.mouseScrollDelta;
+            Vector2 zoom = Input.mouseScrollDelta * Time.timeScale;
             if (zoom.y > 0 && !GameState.isFpv) {
                 offset *= 0.9f;
                 if (offset.magnitude < minOffset) {

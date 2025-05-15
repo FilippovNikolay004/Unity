@@ -16,6 +16,7 @@ public class KeyScript : MonoBehaviour
     private bool isInTime = true;
     private bool isTimerRunning = false;
 
+
     void Start() {
         content = transform.Find("Content").gameObject;
         indicatorImage = transform
@@ -26,7 +27,6 @@ public class KeyScript : MonoBehaviour
         if (isFirstKey) {
             StartTimer();
         }
-        //leftTime = timeout;
     }
 
 
@@ -61,7 +61,6 @@ public class KeyScript : MonoBehaviour
                 ? EffectSounds.keyCollectedInTime
                 : EffectSounds.keyCollectedOutOfTime
             });
-            Debug.Log($"keyNumber: {keyNumber}");
             Destroy(this.gameObject);
         }
     }

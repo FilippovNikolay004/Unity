@@ -17,7 +17,7 @@ public class GameState
     }
 
 
-    public static float _musicVolume = 0.3f;
+    public static float _musicVolume = 0.01f;
     public static float musicVolume {
         get => _musicVolume;
         set {
@@ -56,6 +56,7 @@ public class GameState
     private static List<Action<string>> listeners = new List<Action<string>>();
     public static void AddListener(Action<string> listener) {
         listeners.Add(listener);
+        listener(null);
     }
     public static void RemoveListener(Action<string> listener) {
         listeners.Remove(listener);

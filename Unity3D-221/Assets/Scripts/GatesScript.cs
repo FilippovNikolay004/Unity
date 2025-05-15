@@ -27,17 +27,15 @@ public class GatesScript : MonoBehaviour
         isKeyInserted = false;
         hitCount = 0;
 
-        if (nextKey == null) {
-            Debug.LogError($"{gameObject.name}: nextKey is NULL!");
-        } else {
-            Debug.Log($"{gameObject.name}: nextKey is {nextKey.name}");
-        }
+        AudioSource[] openingSounds = GetComponents<AudioSource>();
+        if (openingSounds.Length > 0)
+            openingSound1 = openingSounds[0];
 
-        //AudioSource[] openingSounds = GetComponents<AudioSource>();
-        //openingSound1 = openingSounds[0];
-        //openingSound2 = openingSounds[1];
+        if (openingSounds.Length > 1)
+            openingSound2 = openingSounds[1];
 
         GameEventSystem.Subscribe(OnGameEvent);
+        GameState.AddListener(OnGameStateChanged);
     }
 
     void Update() {
@@ -47,8 +45,11 @@ public class GatesScript : MonoBehaviour
             if (-(transform.localPosition.magnitude) <= -size) {
                 // Opening ends
                 isOpened = true;
-                //openingSound1.Stop();
-                //openingSound2.Stop();
+
+                if (openingSound1 != null && openingSound2 != null) {
+                    openingSound1.Stop();
+                    openingSound2.Stop();
+                }
 
                 if (nextKey != null) {
                     Debug.Log($"Not NULL");
@@ -57,10 +58,11 @@ public class GatesScript : MonoBehaviour
             }
         }
 
-        //if ((openingSound1.isPlaying || openingSound2.isPlaying)) {
-        //    openingSound1.volume = openingSound2.volume = 
-        //        Time.timeScale == 0.0f ? 0.0f : GameState.effectsVolume;
-        //}
+        if (openingSound1 != null && openingSound2 != null && 
+            (openingSound1.isPlaying || openingSound2.isPlaying)) {
+            openingSound1.volume = openingSound2.volume =
+                Time.timeScale == 0.0f ? 0.0f : GameState.effectsVolume;
+        }
     }
     private void OnCollisionEnter(Collision collision) {
         Debug.Log(collision.gameObject.name);
@@ -70,13 +72,21 @@ public class GatesScript : MonoBehaviour
                     // Opening begins
                     isKeyInserted = true;
                     openTime = isKeyInTime ? openTime1 : openTime2;
-                    //(isKeyInTime ? openingSound1 : openingSound2).Play();
+                    if (openingSound1 != null && openingSound2 != null) {
+                        (isKeyInTime ? openingSound1 : openingSound2).Play();
+                    }
                 }
             } else {
                 if (hitCount == 0) {
-                    ToasterScript.Toast($"To open the door, find key #{keyNumber}");
+                    GameEventSystem.EmitEvent(new GameEvent {
+                        type = $"GateHit",
+                        toast = $"To open the door, find key #{keyNumber}"
+                    });
                 } else {
-                    ToasterScript.Toast($"{hitCount + 1}nd time I say: To open the door, find key #{keyNumber}");
+                    GameEventSystem.EmitEvent(new GameEvent {
+                        type = $"GateHit",
+                        toast = $"{hitCount + 1}nd time I say: To open the door, find key #{keyNumber}"
+                    });
                 }
 
                 hitCount++;
@@ -90,7 +100,17 @@ public class GatesScript : MonoBehaviour
             isKeyInTime = (bool)gameEvent.payload;
         }
     }
+    private void OnGameStateChanged(string fieldName) {
+        if (fieldName == null || fieldName == nameof(GameState.effectsVolume)) {
+            if (openingSound1 != null)
+                openingSound1.volume = GameState.effectsVolume;
+            
+            if (openingSound2 != null)
+                openingSound2.volume = GameState.effectsVolume;
+        }
+    }
     private void OnDestroy() {
         GameEventSystem.Unsubscribe(OnGameEvent);
+        GameState.RemoveListener(OnGameStateChanged);
     }
 }

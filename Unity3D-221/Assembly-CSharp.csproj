@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\LightScript.cs" />
     <Compile Include="Assets\Scripts\GatesScript.cs" />
     <Compile Include="Assets\Scripts\EffectsScript.cs" />
+    <Compile Include="Assets\Scripts\MusicScript.cs" />
     <Compile Include="Assets\Scripts\GameEventSystem.cs" />
     <Compile Include="Assets\Scripts\GameEvent.cs" />
     <Compile Include="Assets\Scripts\CameraScript.cs" />
