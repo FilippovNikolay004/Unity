@@ -6,6 +6,7 @@ public class KeyScript : MonoBehaviour
     [SerializeField] private int keyNumber = 1;
     [SerializeField] private float timeout = 10.0f;
     [SerializeField] private string desk = "color";
+    [SerializeField] private bool isFirstKey = false;
 
     private GameObject content;
     private Image indicatorImage;
@@ -22,6 +23,9 @@ public class KeyScript : MonoBehaviour
             .GetComponent<Image>();
 
         indicatorImage.fillAmount = 1.0f;
+        if (isFirstKey) {
+            StartTimer();
+        }
         //leftTime = timeout;
     }
 
