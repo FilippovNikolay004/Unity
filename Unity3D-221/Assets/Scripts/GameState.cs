@@ -5,6 +5,30 @@ using UnityEngine;
 
 public class GameState
 {
+    public static float _effectsVolume = 0.3f;
+    public static float effectsVolume {
+        get => _effectsVolume;
+        set {
+            if (_effectsVolume != value) {
+                _effectsVolume = value;
+                Notify(nameof(effectsVolume));
+            }
+        }
+    }
+
+
+    public static float _musicVolume = 0.3f;
+    public static float musicVolume {
+        get => _musicVolume;
+        set {
+            if (_musicVolume != value) {
+                _musicVolume = value;
+                Notify(nameof(musicVolume));
+            }
+        }
+    }
+
+
     public static bool _isDay = true;
     public static bool isDay {
         get => _isDay;

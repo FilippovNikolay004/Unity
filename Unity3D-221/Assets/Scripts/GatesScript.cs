@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 
 public class GatesScript : MonoBehaviour
 {
-    [SerializeField] private int KeyNumber = 1;
+    [SerializeField] private int keyNumber = 1;
     [SerializeField] private Vector3 openDirection = Vector3.forward;
     [SerializeField] private float size = 0.7f;
+    [SerializeField] private KeyScript nextKey;
 
     private float openTime;
     private float openTime1 = 4.0f;
@@ -25,9 +27,15 @@ public class GatesScript : MonoBehaviour
         isKeyInserted = false;
         hitCount = 0;
 
-        AudioSource[] openingSounds = GetComponents<AudioSource>();
-        openingSound1 = openingSounds[0];
-        openingSound2 = openingSounds[1];
+        if (nextKey == null) {
+            Debug.LogError($"{gameObject.name}: nextKey is NULL!");
+        } else {
+            Debug.Log($"{gameObject.name}: nextKey is {nextKey.name}");
+        }
+
+        //AudioSource[] openingSounds = GetComponents<AudioSource>();
+        //openingSound1 = openingSounds[0];
+        //openingSound2 = openingSounds[1];
 
         GameEventSystem.Subscribe(OnGameEvent);
     }
@@ -39,10 +47,20 @@ public class GatesScript : MonoBehaviour
             if (-(transform.localPosition.magnitude) <= -size) {
                 // Opening ends
                 isOpened = true;
-                openingSound1.Stop();
-                openingSound2.Stop();
+                //openingSound1.Stop();
+                //openingSound2.Stop();
+
+                if (nextKey != null) {
+                    Debug.Log($"Not NULL");
+                    nextKey.StartTimer();
+                }
             }
         }
+
+        //if ((openingSound1.isPlaying || openingSound2.isPlaying)) {
+        //    openingSound1.volume = openingSound2.volume = 
+        //        Time.timeScale == 0.0f ? 0.0f : GameState.effectsVolume;
+        //}
     }
     private void OnCollisionEnter(Collision collision) {
         Debug.Log(collision.gameObject.name);
@@ -52,13 +70,13 @@ public class GatesScript : MonoBehaviour
                     // Opening begins
                     isKeyInserted = true;
                     openTime = isKeyInTime ? openTime1 : openTime2;
-                    (isKeyInTime ? openingSound1 : openingSound2).Play();
+                    //(isKeyInTime ? openingSound1 : openingSound2).Play();
                 }
             } else {
                 if (hitCount == 0) {
-                    ToasterScript.Toast($"To open the door, find key #{KeyNumber}");
+                    ToasterScript.Toast($"To open the door, find key #{keyNumber}");
                 } else {
-                    ToasterScript.Toast($"{hitCount + 1}nd time I say: To open the door, find key #{KeyNumber}");
+                    ToasterScript.Toast($"{hitCount + 1}nd time I say: To open the door, find key #{keyNumber}");
                 }
 
                 hitCount++;
@@ -67,7 +85,7 @@ public class GatesScript : MonoBehaviour
     }
 
     private void OnGameEvent(GameEvent gameEvent) {
-        if (gameEvent.type == $"Key{KeyNumber}Collected") {
+        if (gameEvent.type == $"Key{keyNumber}Collected") {
             isKeyCollected = true;
             isKeyInTime = (bool)gameEvent.payload;
         }

@@ -9,8 +9,11 @@ public class KeyScript : MonoBehaviour
 
     private GameObject content;
     private Image indicatorImage;
+
     private float leftTime;
+
     private bool isInTime = true;
+    private bool isTimerRunning = false;
 
     void Start() {
         content = transform.Find("Content").gameObject;
@@ -19,15 +22,13 @@ public class KeyScript : MonoBehaviour
             .GetComponent<Image>();
 
         indicatorImage.fillAmount = 1.0f;
-        leftTime = timeout;
-        //GameState.isKey1InTime = true;
+        //leftTime = timeout;
     }
 
 
     void Update() {
         content.transform.Rotate(0, Time.deltaTime * 30f, 0);
-
-        if (leftTime >= 0) {
+        if (isTimerRunning && leftTime >= 0) {
             indicatorImage.fillAmount = leftTime / timeout;
             indicatorImage.color = new Color(
                 Mathf.Clamp01(2.0f * (1.0f - indicatorImage.fillAmount)),
@@ -41,6 +42,11 @@ public class KeyScript : MonoBehaviour
         }
     }
 
+    public void StartTimer() {
+        leftTime = timeout;
+        isTimerRunning = true;
+    }
+
     private void OnTriggerEnter(Collider other) {
         if (other.name == "Player") {
             GameEventSystem.EmitEvent(new GameEvent {
@@ -51,6 +57,7 @@ public class KeyScript : MonoBehaviour
                 ? EffectSounds.keyCollectedInTime
                 : EffectSounds.keyCollectedOutOfTime
             });
+            Debug.Log($"keyNumber: {keyNumber}");
             Destroy(this.gameObject);
         }
     }

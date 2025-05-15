@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\SkyboxScript.cs" />
     <Compile Include="Assets\Scripts\KeyScript.cs" />
     <Compile Include="Assets\Scripts\EffectSounds.cs" />
+    <Compile Include="Assets\Scripts\MenuScript.cs" />
     <Compile Include="Assets\Scripts\FlashLightScript.cs" />
     <Compile Include="Assets\Scripts\LightScript.cs" />
     <Compile Include="Assets\Scripts\GatesScript.cs" />
