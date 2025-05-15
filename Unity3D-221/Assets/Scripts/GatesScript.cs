@@ -28,6 +28,10 @@ public class GatesScript : MonoBehaviour
         hitCount = 0;
 
         AudioSource[] openingSounds = GetComponents<AudioSource>();
+        if (openingSounds.Length == 0) {
+            Debug.LogError($"Is Empty");
+        }
+
         if (openingSounds.Length > 0)
             openingSound1 = openingSounds[0];
 
@@ -46,8 +50,10 @@ public class GatesScript : MonoBehaviour
                 // Opening ends
                 isOpened = true;
 
-                if (openingSound1 != null && openingSound2 != null) {
+                if (openingSound1 != null) {
                     openingSound1.Stop();
+                }
+                if (openingSound2 != null) {
                     openingSound2.Stop();
                 }
 
@@ -58,10 +64,12 @@ public class GatesScript : MonoBehaviour
             }
         }
 
-        if (openingSound1 != null && openingSound2 != null && 
+        if (openingSound1 != null && openingSound2 != null &&
             (openingSound1.isPlaying || openingSound2.isPlaying)) {
             openingSound1.volume = openingSound2.volume =
                 Time.timeScale == 0.0f ? 0.0f : GameState.effectsVolume;
+        } else if (openingSound1 != null && openingSound1.isPlaying) {
+            openingSound1.volume = Time.timeScale == 0.0f ? 0.0f : GameState.effectsVolume;
         }
     }
     private void OnCollisionEnter(Collision collision) {
@@ -72,8 +80,11 @@ public class GatesScript : MonoBehaviour
                     // Opening begins
                     isKeyInserted = true;
                     openTime = isKeyInTime ? openTime1 : openTime2;
+
                     if (openingSound1 != null && openingSound2 != null) {
                         (isKeyInTime ? openingSound1 : openingSound2).Play();
+                    } else if (openingSound1 != null) {
+                        openingSound1.Play();
                     }
                 }
             } else {

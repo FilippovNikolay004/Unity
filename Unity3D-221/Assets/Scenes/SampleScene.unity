@@ -3293,8 +3293,8 @@ GameObject:
   - component: {fileID: 216497043}
   - component: {fileID: 216497044}
   - component: {fileID: 216497045}
-  - component: {fileID: 216497047}
   - component: {fileID: 216497046}
+  - component: {fileID: 216497047}
   m_Layer: 0
   m_Name: Content
   m_TagString: Untagged
@@ -3367,8 +3367,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c6e5eb4047edcf74c87f109d0b0f10e6, type: 3}
-  m_Resource: {fileID: 8300000, guid: c6e5eb4047edcf74c87f109d0b0f10e6, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9365eea4550492b499c146e2e867a20a, type: 3}
+  m_Resource: {fileID: 8300000, guid: 9365eea4550492b499c146e2e867a20a, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3464,8 +3464,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9365eea4550492b499c146e2e867a20a, type: 3}
-  m_Resource: {fileID: 8300000, guid: 9365eea4550492b499c146e2e867a20a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c6e5eb4047edcf74c87f109d0b0f10e6, type: 3}
+  m_Resource: {fileID: 8300000, guid: c6e5eb4047edcf74c87f109d0b0f10e6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
