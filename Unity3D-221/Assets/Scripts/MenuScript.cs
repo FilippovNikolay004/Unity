@@ -11,38 +11,28 @@ public class MenuScript : MonoBehaviour
     private Slider musicSlider;
     private Toggle muteToggle;
 
+    private float startTimeScale;
+
+    private float defaultMusicVolume;
+    private float defaultEffectsVolume;
+    private bool defaultIsMuted;
+
 
     void Start()
     {
+        GetDefaults();
+
         content = transform.Find("Content").gameObject;
         
         effectsSlider = transform.Find("Content/Sounds/EffectsSlider").GetComponent<Slider>();
         musicSlider = transform.Find("Content/Sounds/MusicSlider").GetComponent<Slider>();
         muteToggle = transform.Find("Content/Sounds/MuteToggle").GetComponent<Toggle>();
-
-        if (PlayerPrefs.HasKey("effectsVolume")) {
-            GameState.effectsVolume = 
-                effectsSlider.value = 
-                PlayerPrefs.GetFloat("effectsVolume");
-        } else {
-            effectsSlider.value = GameState.effectsVolume;
-        }
-
-        if (PlayerPrefs.HasKey("musicVolume")) {
-            GameState.musicVolume =
-                musicSlider.value =
-                PlayerPrefs.GetFloat("musicVolume");
-        } else {
-            musicSlider.value = GameState.musicVolume;
-        }
-
-        if (PlayerPrefs.HasKey("isMuted")) {
-            isMuted = muteToggle.isOn = PlayerPrefs.GetInt("isMuted") == 1;
-        } else {
-            isMuted = muteToggle.isOn;
-        }
-
+        
+        LoadSaves();
         OnMuteValueChanged(isMuted);
+
+        startTimeScale = Time.timeScale;
+        
         Hide();
     }
 
@@ -57,12 +47,43 @@ public class MenuScript : MonoBehaviour
         }
     }
 
+    private void GetDefaults() {
+        defaultEffectsVolume = GameState.effectsVolume;
+        defaultMusicVolume = GameState.musicVolume;
+        defaultIsMuted = false;
+    }
+
+    private void LoadSaves() {
+        if (PlayerPrefs.HasKey("effectsVolume")) {
+            GameState.effectsVolume =
+                effectsSlider.value =
+                PlayerPrefs.GetFloat("effectsVolume");
+        } else {
+            effectsSlider.value = defaultEffectsVolume;
+        }
+
+        if (PlayerPrefs.HasKey("musicVolume")) {
+            GameState.musicVolume =
+                musicSlider.value =
+                PlayerPrefs.GetFloat("musicVolume");
+        } else {
+            musicSlider.value = defaultMusicVolume;
+        }
+
+        if (PlayerPrefs.HasKey("isMuted")) {
+            isMuted = muteToggle.isOn = PlayerPrefs.GetInt("isMuted") == 1;
+        } else {
+            isMuted = defaultIsMuted;
+        }
+    }
+
 
     private void Hide() {
         content.SetActive(false);
-        Time.timeScale = 1.0f;
+        Time.timeScale = startTimeScale;
     }
     private void Show() {
+        startTimeScale = Time.timeScale;
         content.SetActive(true);
         Time.timeScale = 0.0f;
     }
@@ -89,6 +110,27 @@ public class MenuScript : MonoBehaviour
             GameState.musicVolume = musicSlider.value;
         }
     }
+
+
+    // Buttons
+    public void OnContinueClick() {
+        Hide();
+    }
+    public void OnDefaultsClick() {
+        GameState.effectsVolume = effectsSlider.value = defaultEffectsVolume;
+        GameState.musicVolume = musicSlider.value = defaultMusicVolume;
+        isMuted = muteToggle.isOn = defaultIsMuted;
+    }
+    public void OnExitClick() {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+
+        #if UNITY_STANDALONE
+            Application.Quit();
+        #endif
+    }
+
 
     private void OnDestroy() {
         PlayerPrefs.SetFloat("effectsVolume", effectsSlider.value);

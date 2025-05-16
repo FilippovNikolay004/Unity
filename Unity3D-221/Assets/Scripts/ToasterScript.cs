@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEditor.Search;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using static UnityEngine.InputSystem.InputRemoting;
 
 public class ToasterScript : MonoBehaviour
 {

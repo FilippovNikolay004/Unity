@@ -27,7 +27,7 @@ public class PlayerScript : MonoBehaviour
         }
 
         Vector3 force = cameraForward * moveValue.y + cameraRight * moveValue.x;
-        rb.AddForce(force);
-        //rb.AddForce(force * Time.deltaTime);
+        //rb.AddForce(force);
+        rb.AddForce(force * 100* Time.deltaTime);
     }
 }
