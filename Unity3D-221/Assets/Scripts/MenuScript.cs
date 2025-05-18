@@ -11,6 +11,7 @@ public class MenuScript : MonoBehaviour
     private Slider musicSlider;
     private Slider gateVolumeSlider;
     private Toggle muteToggle;
+    private Slider allSoundsSlider;
 
     private float startTimeScale;
 
@@ -18,6 +19,8 @@ public class MenuScript : MonoBehaviour
     private float defaultEffectsVolume;
     private float defaultGateVolume;
     private bool defaultIsMuted;
+
+    private float allVolumeMultiplier = 1.0f;
 
 
     void Start()
@@ -30,8 +33,10 @@ public class MenuScript : MonoBehaviour
         musicSlider = transform.Find("Content/Sounds/MusicSlider").GetComponent<Slider>();
         gateVolumeSlider = transform.Find("Content/Sounds/GatesSlider").GetComponent<Slider>();
         muteToggle = transform.Find("Content/Sounds/MuteToggle").GetComponent<Toggle>();
+        allSoundsSlider = transform.Find("Content/Sounds/AllSoundsSlider").GetComponent<Slider>();
 
         LoadSaves();
+        ApplyVolumes();
         OnMuteValueChanged(isMuted);
 
         startTimeScale = Time.timeScale;
@@ -85,6 +90,12 @@ public class MenuScript : MonoBehaviour
         } else {
             isMuted = defaultIsMuted;
         }
+
+        if (PlayerPrefs.HasKey("allVolumeMultiplier")) {
+            allVolumeMultiplier = allSoundsSlider.value = PlayerPrefs.GetFloat("allVolumeMultiplier");
+        } else {
+            allVolumeMultiplier = allSoundsSlider.value = 1.0f;
+        }
     }
 
 
@@ -99,35 +110,54 @@ public class MenuScript : MonoBehaviour
     }
 
 
-    public void OnEffectsVolumeValueChanged(float volume) {
-        if (!isMuted) {
+    public void OnEffectsVolumeValueChanged(float volume)
+    {
+        if (!isMuted)
+        {
             GameState.effectsVolume = volume;
+            ApplyVolumes();
         }
     }
-    public void OnMusicVolumeValueChanged(float volume) {
-        if (!isMuted) {
+    public void OnMusicVolumeValueChanged(float volume)
+    {
+        if (!isMuted)
+        {
             GameState.musicVolume = volume;
+            ApplyVolumes();
         }
     }
-    public void OnGateVolumeValueChanged(float volume) {
-        if (!isMuted) {
+    public void OnGateVolumeValueChanged(float volume)
+    {
+        if (!isMuted)
+        {
             GameState.gateVolume = volume;
+            ApplyVolumes();
         }
     }
-    public void OnMuteValueChanged(bool isMute) {
+    public void OnAllSoundsVolumeChanged(float volume) {
+        allVolumeMultiplier = volume;
+        ApplyVolumes();
+    }
+    public void OnMuteValueChanged(bool isMute)
+    {
         isMuted = isMute;
-
-        if (isMute) {
-            GameState.effectsVolume = 0.0f;
-            GameState.musicVolume = 0.0f;
-            GameState.gateVolume = 0.0f;
-        } else {
-            GameState.effectsVolume = effectsSlider.value;
-            GameState.musicVolume = musicSlider.value;
-            GameState.gateVolume = gateVolumeSlider.value;
-        }
+        ApplyVolumes();
     }
 
+    private void ApplyVolumes() {
+        if (isMuted) {
+            AudioListener.volume = 0f;
+        }
+        else {
+            float finalEffects = effectsSlider.value * allVolumeMultiplier;
+            float finalMusic = musicSlider.value * allVolumeMultiplier;
+            float finalGate = gateVolumeSlider.value * allVolumeMultiplier;
+
+            GameState.effectsVolume = finalEffects;
+            GameState.musicVolume = finalMusic;
+            GameState.gateVolume = finalGate;
+        }
+    }
 
     // Buttons
     public void OnContinueClick() {
@@ -138,6 +168,7 @@ public class MenuScript : MonoBehaviour
         GameState.musicVolume = musicSlider.value = defaultMusicVolume;
         GameState.gateVolume = gateVolumeSlider.value = defaultGateVolume;
         isMuted = muteToggle.isOn = defaultIsMuted;
+        allVolumeMultiplier = 1.0f;
     }
     public void OnExitClick() {
         #if UNITY_EDITOR
@@ -149,12 +180,12 @@ public class MenuScript : MonoBehaviour
         #endif
     }
 
-
     private void OnDestroy() {
         PlayerPrefs.SetFloat("effectsVolume", effectsSlider.value);
         PlayerPrefs.SetFloat("musicVolume",musicSlider.value);
         PlayerPrefs.SetFloat("gateVolume", gateVolumeSlider.value);
         PlayerPrefs.SetInt("isMuted", isMuted ? 1 : 0);
+        PlayerPrefs.SetFloat("allVolumeMultiplier", allSoundsSlider.value);
 
         PlayerPrefs.Save();
     }
