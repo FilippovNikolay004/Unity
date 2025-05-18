@@ -29,6 +29,19 @@ public class GameState
     }
 
 
+    public static float _gateVolume = 0.05f;
+    public static float gateVolume {
+        get => _gateVolume;
+        set {
+            if (_gateVolume != value) {
+                _gateVolume = value;
+                Notify(nameof(gateVolume));
+            }
+
+        }
+    }
+
+
     public static bool _isDay = true;
     public static bool isDay {
         get => _isDay;
