@@ -30,9 +30,10 @@ public class CameraScript : MonoBehaviour
 
     void Start()
     {
+        cameraAnchor = GameObject.Find("Player").transform;
         offset = this.transform.position - cameraAnchor.position;
         lookAction = InputSystem.actions.FindAction("Look");
-        
+
         angleY = angleY0 = this.transform.eulerAngles.y;
         angleX = angleX0 = this.transform.eulerAngles.x;
 
@@ -41,23 +42,48 @@ public class CameraScript : MonoBehaviour
 
     void Update()
     {
-        if (isFixed) {
+        if (!cameraAnchor)
+        {
+            GameObject playerObj = GameObject.Find("Player");
+            if (playerObj != null)
+            {
+                cameraAnchor = playerObj.transform;
+                offset = this.transform.position - cameraAnchor.position;
+
+                Debug.Log("Camera reattached to new Player.");
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        if (isFixed)
+        {
             this.transform.position = fixedCameraPosition.position;
             this.transform.rotation = fixedCameraPosition.rotation;
-        } else {
+        }
+        else
+        {
             Vector2 zoom = Input.mouseScrollDelta * Time.timeScale;
-            if (zoom.y > 0 && !GameState.isFpv) {
+            if (zoom.y > 0 && !GameState.isFpv)
+            {
                 offset *= 0.9f;
-                if (offset.magnitude < minOffset) {
+                if (offset.magnitude < minOffset)
+                {
                     offset *= 0.01f;
                     GameState.isFpv = true;
                 }
-            } else if (zoom.y < 0) {
-                if (GameState.isFpv) {
+            }
+            else if (zoom.y < 0)
+            {
+                if (GameState.isFpv)
+                {
                     offset *= minOffset / offset.magnitude;
                     GameState.isFpv = false;
                 }
-                if (offset.magnitude < maxOffset) {
+                if (offset.magnitude < maxOffset)
+                {
                     offset *= 1.1f;
                 }
             }

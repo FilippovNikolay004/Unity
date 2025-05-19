@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class GameState
 {
+    public static Dictionary<string, int> bag { get; } = new Dictionary<string, int>();
+
+
     public static float _effectsVolume = 0.3f;
     public static float effectsVolume {
         get => _effectsVolume;

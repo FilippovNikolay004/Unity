@@ -64,9 +64,11 @@
     <Compile Include="Assets\Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\ToasterScript.cs" />
     <Compile Include="Assets\Scripts\CameraFixedScript.cs" />
+    <Compile Include="Assets\Scripts\FinishScript.cs" />
     <Compile Include="Assets\Scripts\BatteryScript.cs" />
     <Compile Include="Assets\Scripts\SkyboxScript.cs" />
     <Compile Include="Assets\Scripts\KeyScript.cs" />
+    <Compile Include="Assets\Scripts\ReturnScript.cs" />
     <Compile Include="Assets\Scripts\EffectSounds.cs" />
     <Compile Include="Assets\Scripts\MenuScript.cs" />
     <Compile Include="Assets\Scripts\FlashLightScript.cs" />

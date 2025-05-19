@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
+    [SerializeField] private Image[] bagImage;
+
     private GameObject content;
     
     private bool isMuted;
@@ -107,6 +109,14 @@ public class MenuScript : MonoBehaviour
         startTimeScale = Time.timeScale;
         content.SetActive(true);
         Time.timeScale = 0.0f;
+
+        for (int i = 0; i < bagImage.Length; i++) {
+            if (GameState.bag.ContainsKey($"Key{i + 1}")) {
+                bagImage[i].enabled = true;
+            } else {
+                bagImage[i].enabled = false;
+            }
+        }
     }
 
 

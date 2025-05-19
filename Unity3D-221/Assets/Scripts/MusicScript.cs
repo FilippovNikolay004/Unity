@@ -2,23 +2,45 @@
 
 public class MusicScript : MonoBehaviour
 {
+    public static MusicScript Instance;
+
     private AudioSource music;
+
+
 
     void Start()
     {
-        music = GetComponent<AudioSource>();
 
-        GameState.AddListener(OnGameStateChanged);
-    }
-
-
-    private void OnGameStateChanged(string fieldName) {
-        //if (fieldName == null || fieldName == nameof(GameState.musicVolume)) 
+        if (Instance == null)
         {
-            music.volume = GameState.musicVolume;
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Не уничтожать при переходе между сценами
         }
+        else
+        {
+            Destroy(gameObject); // Удалить дубликат
+            return;
+        }
+
+        music = GetComponent<AudioSource>();
+        GameState.AddListener(OnGameStateChanged);
+
+        // Обновить громкость при старте
+        music.volume = GameState.musicVolume;
     }
-    private void OnDestroy() {
-        GameState.RemoveListener(OnGameStateChanged);
+
+    private void OnGameStateChanged(string fieldName)
+    {
+        // Настроить на любое изменение, или только по имени поля
+        music.volume = GameState.musicVolume;
+    }
+
+    private void OnDestroy()
+    {
+        // Только если именно этот экземпляр уничтожается
+        if (Instance == this)
+        {
+            GameState.RemoveListener(OnGameStateChanged);
+        }
     }
 }

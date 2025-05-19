@@ -53,6 +53,8 @@ public class KeyScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if (other.name == "Player") {
+            GameState.bag.Add($"Key{keyNumber}", 1);
+
             GameEventSystem.EmitEvent(new GameEvent {
                 type = $"Key{keyNumber}Collected",
                 payload = isInTime,
